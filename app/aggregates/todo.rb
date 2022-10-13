@@ -31,6 +31,9 @@ module EventSourceryTodoApp
       apply TodoMoveup do |event|
       end
 
+      apply TodoMovedown do |event|
+      end
+
       def add(payload)
         raise UnprocessableEntity, "Todo #{id.inspect} already exists" if added?
 
@@ -78,6 +81,13 @@ module EventSourceryTodoApp
 
       def moveup(payload)
         apply_event(TodoMoveup,
+          aggregate_id: id,
+          body: payload,
+        )
+      end
+
+      def movedown(payload)
+        apply_event(TodoMovedown,
           aggregate_id: id,
           body: payload,
         )

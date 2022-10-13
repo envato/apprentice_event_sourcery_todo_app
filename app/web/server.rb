@@ -6,6 +6,7 @@ require 'app/commands/todo/add'
 require 'app/commands/todo/amend'
 require 'app/commands/todo/complete'
 require 'app/commands/todo/moveup'
+require 'app/commands/todo/movedown'
 require 'app/projections/completed_todos/query'
 require 'app/projections/outstanding_todos/query'
 require 'app/projections/scheduled_todos/query'
@@ -74,6 +75,12 @@ module EventSourceryTodoApp
     put '/todo/:todo_id/moveup' do
       command = Commands::Todo::Moveup::Command.build(json_params)
       Commands::Todo::Moveup::CommandHandler.new.handle(command)
+      status 200
+    end
+
+    put '/todo/:todo_id/movedown' do
+      command = Commands::Todo::Movedown::Command.build(json_params)
+      Commands::Todo::Movedown::CommandHandler.new.handle(command)
       status 200
     end
 
