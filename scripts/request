@@ -153,6 +153,23 @@ command :moveup do |c|
   end
 end
 
+command :movedown do |c|
+  c.syntax = "#{script_name} Move down [options]"
+  c.summary = 'Move down a Todo item via the Todo web API'
+  c.option '-i ID', '--id ID', 'Todo ID'
+  c.action do |args, options|
+    todo_id = options.id
+    unless todo_id
+      $stderr.puts "Error: you must specify a Todo ID for the moved down Todo"
+      $stderr.puts "You can generate one using `#{script_name} uuid`."
+      exit 1
+    end
+    payload = slice_and_compact(options.default)
+    puts "Moving down todo [#{todo_id}]: #{payload}"
+    Request.call(:put, "/todo/#{todo_id}/movedown", payload)
+  end
+end
+
 command :list do |c|
   LISTS = [
     'outstanding',
